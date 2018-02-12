@@ -29,6 +29,8 @@ def update_firewall():
         else:
             for port, port_config in config['NetworkSettings']['Ports'].items():
                 port, prot = port.split('/')
+                if not port_config:
+                    continue
                 for share in port_config:
                     host_port = share['HostPort']
                     rules.append(f'-A DOCKER-AUTOFIREWALL -m state --state NEW -m {prot} -p {prot} --dport {host_port} -j ACCEPT')
